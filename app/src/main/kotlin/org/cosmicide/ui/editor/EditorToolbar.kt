@@ -226,6 +226,10 @@ internal fun EditorToolbar(
                     }
                 }
                 DropdownMenuItem(text = { Text("Editor") }, children = {
+                    DropdownMenuItem(text = { Text("Find & Replace") }, onClick = {
+                        editor.beginSearchMode()
+                        showMenu = false
+                    })
                     DropdownMenuItem(text = { Text("Format") }, onClick = {
                         editor.formatCodeAsync()
                         showMenu = false
