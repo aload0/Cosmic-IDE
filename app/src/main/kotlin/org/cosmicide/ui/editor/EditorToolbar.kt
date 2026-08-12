@@ -234,6 +234,10 @@ internal fun EditorToolbar(
                         showGoToLineDialog = true
                         showMenu = false
                     })
+                    DropdownMenuItem(text = { Text("Statistics") }, onClick = {
+                        showStatsDialog = true
+                        showMenu = false
+                    })
                 })
             }
         }

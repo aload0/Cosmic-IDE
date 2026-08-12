@@ -102,8 +102,11 @@ class HoverLayout : HoverLayout {
                 }
             }
 
-            // HoverWindow measures before attaching the PopupWindow.
-            createComposition(ComposeViewContext(window.editor))
+            // HoverWindow measures before attaching the PopupWindow. Only possible once the
+            // editor is attached; otherwise the strategy creates composition on attach.
+            if (window.editor.isAttachedToWindow) {
+                createComposition(ComposeViewContext(window.editor))
+            }
         }
     }
 
