@@ -164,6 +164,9 @@ fun CodeEditor.configureLspLanguage(
                 )
             }
         } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                editable = true
+            }
             lspEditor.dispose()
             Log.w(TAG, "Failed to connect to ${definition.displayName}", e)
             LspLogStore.error(definition.displayName, "Failed to connect", e)
