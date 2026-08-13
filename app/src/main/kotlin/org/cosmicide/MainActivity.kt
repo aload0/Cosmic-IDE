@@ -7,11 +7,16 @@
 
 package org.cosmicide
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
@@ -24,6 +29,7 @@ import org.cosmicide.common.Prefs
 import org.cosmicide.editor.EditorExtensionPoints
 import org.cosmicide.editor.lsp.LspEditorLanguageProvider
 import org.cosmicide.plugin.CosmicPluginHost
+import org.cosmicide.service.KeepAliveService
 import org.cosmicide.ui.IDENavigation
 import org.cosmicide.ui.donation.DonationPromptTracker
 import org.cosmicide.ui.editor.resolveTheme
@@ -41,6 +47,7 @@ class MainActivity : ComponentActivity() {
         if (savedInstanceState == null) {
             DonationPromptTracker.recordLaunch(applicationContext)
         }
+        startKeepAliveService()
         val appContainer = AppContainer(applicationContext)
 
         setContent {
@@ -93,6 +100,19 @@ class MainActivity : ComponentActivity() {
         applyEditorThemeSelection(themeRegistry, darkTheme)
 
         LspEditorLanguageProvider.updateColors(colorScheme)
+    }
+
+    private fun startKeepAliveService() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 100
+            )
+        }
+        runCatching { KeepAliveService.start(this) }
+            .onFailure { Log.w(TAG, "Could not start keep-alive service", it) }
     }
 
     private companion object {

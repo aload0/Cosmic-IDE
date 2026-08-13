@@ -25,6 +25,7 @@
     <string name="create_java_class">Create java class</string>
 
     <string name="terminal">Terminal</string>
+    <string name="keep_alive_notification_text">Cosmic IDE is running in the background</string>
     <string name="lsp_diagnostic_copy">Copy</string>
     <string name="lsp_diagnostic_quick_fixes">Quick fixes</string>
 </resources>
