@@ -117,8 +117,11 @@ class ComposeSignatureHelpLayout : SignatureHelpLayout {
                 }
             }
 
-            // SignatureHelpWindow measures before attaching its PopupWindow.
-            createComposition(ComposeViewContext(window.editor))
+            // SignatureHelpWindow measures before attaching its PopupWindow. Only possible once
+            // the editor is attached; otherwise the strategy creates composition on attach.
+            if (window.editor.isAttachedToWindow) {
+                createComposition(ComposeViewContext(window.editor))
+            }
         }
         return composeView
     }
@@ -171,7 +174,11 @@ class ComposeSignatureHelpLayout : SignatureHelpLayout {
      * initial empty state.
      */
     private fun composeBeforeHostMeasurement() {
-        if (!::composeView.isInitialized || composeView.isAttachedToWindow) return
+        if (
+            !::composeView.isInitialized ||
+            composeView.isAttachedToWindow ||
+            !window.editor.isAttachedToWindow
+        ) return
         composeView.disposeComposition()
         composeView.createComposition(ComposeViewContext(window.editor))
     }
