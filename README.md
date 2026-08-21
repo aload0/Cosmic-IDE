@@ -117,7 +117,7 @@ to be added or updated independently.
 ## Quick Start
 
 1. **Install**: Download
-   the [latest nightly APK](https://nightly.link/Cosmic-Ide/Cosmic-IDE/workflows/android/main/app-arm64-v8a.zip).
+   the [latest nightly APK](https://nightly.link/aload0/Cosmic-IDE/workflows/android/main/app-arm64-v8a.zip).
 2. **Bootstrap**: Follow the guided setup to install a JDK and the base Linux environment.
 3. **Coding**: Create a new project or clone a repository.
 
